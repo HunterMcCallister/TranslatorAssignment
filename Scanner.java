@@ -162,7 +162,7 @@ public class Scanner {
 	// and calls a method to scan that token's lexeme (e.g., "foo").
 
 	/**
-	 * advances to the next tokeen in the input
+	 * advances to the next token in the input
 	 * @return false if EOF reached, true otherwise
 	 */
 	public boolean next() {
@@ -171,12 +171,12 @@ public class Scanner {
 			if(program.startsWith("//", pos)){ //skip comments with '//'
 				while(!done() && program.charAt(pos) != '\n')
 					pos++;
-				return next()
+				return next();
 			}
 			if (program.charAt(pos) == '#'){ //skip comments with '#'
 				while (!done() && program.charAt(pos) != '\n')
 					pos++;
-				return next()
+				return next();
 			}
 		}
 
