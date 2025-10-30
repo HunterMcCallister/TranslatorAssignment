@@ -166,11 +166,27 @@ public class Scanner {
 	 * @return false if EOF reached, true otherwise
 	 */
 	public boolean next() {
+
+		if (!done()) {
+			if(program.startsWith("//", pos)){ //skip comments with '//'
+				while(!done() && program.charAt(pos) != '\n')
+					pos++;
+				return next()
+			}
+			if (program.charAt(pos) == '#'){ //skip comments with '#'
+				while (!done() && program.charAt(pos) != '\n')
+					pos++;
+				return next()
+			}
+		}
+
 		many(whitespace);
 		if (done()) {
 			token=new Token("EOF");
 			return false;
 		}
+
+
 		String c=program.charAt(pos)+"";
 		if (digits.contains(c))
 			nextNumber();
