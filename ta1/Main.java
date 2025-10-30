@@ -1,11 +1,14 @@
-// This is the main class/method for the interpreter/compiler.
-// Each command-line argument is a complete program,
-// which is scanned, parsed, and evaluated.
-// All evaluations share the same environment,
-// so they can share variables.
+/**
+ * Main Class that is the entry point to the interpreter.
+ * each command line arg represents the complete program written. Program is scanned, parsed into a parse tree and then evaluated
+ * all evals share the same isntance.
+ */
 
 public class Main {
-
+	/**
+	 * entry to the translator
+	 * @param args langouage
+	 */
 	public static void main(String[] args) {
 		Parser parser=new Parser();
 		Environment env=new Environment();

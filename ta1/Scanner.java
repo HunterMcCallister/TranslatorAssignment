@@ -1,6 +1,11 @@
-// This class is a scanner for the program
-// and programming language being interpreted.
-
+/**
+ * The Scanner class performs lexical analysis on the input program.
+ *
+ * It reads the raw source code, breaks it into tokens (numbers, identifiers,
+ * operators, etc...) and provides them one at a time to the parser.
+ *
+ * Each token corresponds to a lexeme defined by the programming language grammar.
+ */
 import java.util.*;
 
 public class Scanner {
@@ -17,33 +22,42 @@ public class Scanner {
 	private Set<String> keywords=new HashSet<String>();
 	private Set<String> operators=new HashSet<String>();
 
-	// initializers for previous sets
-
+	/**
+	 * Fills a set with all characters from low to hi inclusive
+	 * @param s the set to fill
+	 * @param lo the first character in the range
+	 * @param hi the last character in the range
+	 */
 	private void fill(Set<String> s, char lo, char hi) {
 		for (char c=lo; c<=hi; c++)
 			s.add(c+"");
 	}
 
+	/**
+	 * Initializes the whitespace character set
+	 */
 	private void initWhitespace(Set<String> s) {
 		s.add(" ");
 		s.add("\n");
 		s.add("\t");
 	}
 
+
+	/** Initializes the digit character set (0–9). */
 	private void initDigits(Set<String> s) {
 		fill(s,'0','9');
 	}
-
+	/** Initializes the letter character set (A–Z, a–z). */
 	private void initLetters(Set<String> s) {
 		fill(s,'A','Z');
 		fill(s,'a','z');
 	}
-
+	/** Initializes the legal alphanumeric character set (letters + digits). */
 	private void initLegits(Set<String> s) {
 		s.addAll(letters);
 		s.addAll(digits);
 	}
-
+	/** Initializes the operator character set. */
 	private void initOperators(Set<String> s) {
 		s.add("=");
 		s.add("+");
@@ -54,10 +68,14 @@ public class Scanner {
 		s.add(")");
 		s.add(";");
 	}
-
+	/** Initializes the keyword set. (Empty for now.) */
 	private void initKeywords(Set<String> s) {
 	}
 
+	/**
+	 * Constructs a scanner for the given source program
+	 * @param program source code to be scanned
+	 */
 	// constructor:
 	//     - squirrel-away source program
 	//     - initialize sets
@@ -74,11 +92,15 @@ public class Scanner {
 	}
 
 	// handy string-processing methods
-
+	/** @return true if the end of the program has been reached. */
 	public boolean done() {
 		return pos>=program.length();
 	}
 
+	/**
+	 * Advances the position while the current character belongs to the given set.
+	 * @param s set of allowed characters
+	 */
 	private void many(Set<String> s) {
 		while (!done()&&s.contains(program.charAt(pos)+""))
 			pos++;
@@ -93,6 +115,11 @@ public class Scanner {
 	// Members:
 	//     program = the scanner's input
 	//     pos = index of current input character
+
+	/**
+	 * Advances the position until after a specified character appears.
+	 * @param c character to skip past
+	 */
 	private void past(char c) {
 		while (!done()&&c!=program.charAt(pos))
 			pos++;
@@ -101,13 +128,13 @@ public class Scanner {
 	}
 
 	// scan various kinds of lexeme
-
+	/** Scans a numeric literal token. */
 	private void nextNumber() {
 		int old=pos;
 		many(digits);
 		token=new Token("num",program.substring(old,pos));
 	}
-
+	/** Scans an identifier or keyword token. */
 	private void nextKwId() {
 		int old=pos;
 		many(letters);
@@ -115,7 +142,7 @@ public class Scanner {
 		String lexeme=program.substring(old,pos);
 		token=new Token((keywords.contains(lexeme) ? lexeme : "id"),lexeme);
 	}
-
+	/** Scans an operator token (one or two characters). */
 	private void nextOp() {
 		int old=pos;
 		pos=old+2;
@@ -133,6 +160,11 @@ public class Scanner {
 
 	// This method determines the kind of the next token (e.g., "id"),
 	// and calls a method to scan that token's lexeme (e.g., "foo").
+
+	/**
+	 * advances to the next tokeen in the input
+	 * @return false if EOF reached, true otherwise
+	 */
 	public boolean next() {
 		many(whitespace);
 		if (done()) {
@@ -156,23 +188,36 @@ public class Scanner {
 
 	// This method scans the next lexeme,
 	// if the current token is the expected token.
+
+	/**
+	 * Matches teh current token against an expected one and then advances
+	 * @param t expected token
+	 * @throws SyntaxException if current token does not match
+	 */
 	public void match(Token t) throws SyntaxException {
 		if (!t.equals(curr()))
 			throw new SyntaxException(pos,t,curr());
 		next();
 	}
 
+	/**
+	 * Returns the current token without advancing
+	 * @return curr token
+	 * @throws SyntaxException if called before scanning any tokens
+	 */
 	public Token curr() throws SyntaxException {
 		if (token==null)
 			throw new SyntaxException(pos,new Token("ANY"),new Token("EMPTY"));
 		return token;
 	}
-
+	/** @return the current position in the source code. */
 	public int pos() {
 		return pos;
 	}
 
 	// for unit testing
+
+	/** Simple test driver that prints all tokens in the given input. */
 	public static void main(String[] args) {
 		try {
 			Scanner scanner=new Scanner(args[0]);

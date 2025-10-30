@@ -1,24 +1,44 @@
-// This class is a recursive-descent parser,
-// modeled after the programming language's grammar.
-// It constructs and has-a Scanner for the program
-// being parsed.
+/**
+ * Parser implements recursion for the source language. each method corresponds to a production in the grammar file.
+ * It uses a scanner to read the tokens abd build a parse tree of nodes.
+ */
 
 public class Parser {
-
+	/** the scanner that provides the tokens for the parser*/
 	private Scanner scanner;
 
+	/**
+	 * Ensures the token matches the expected symbol.
+	 * Goes onto the next if it is successful.
+	 * @param s token String
+	 * @throws SyntaxException if token does not match
+	 */
 	private void match(String s) throws SyntaxException {
 		scanner.match(new Token(s));
 	}
 
+	/**
+	 * Returns the current token without advancing.
+	 * @return current token
+	 * @throws SyntaxException if scanner finds invalid syntax
+	 */
 	private Token curr() throws SyntaxException {
 		return scanner.curr();
 	}
 
+	/**
+	 * @return the current position
+	 */
 	private int pos() {
 		return scanner.pos();
 	}
 
+	/**
+	 * Parses a multiplication or division
+	 *
+	 * @return NodeMulop if found or null
+	 * @throws SyntaxException if parsing fails
+	 */
 	private NodeMulop parseMulop() throws SyntaxException {
 		if (curr().equals(new Token("*"))) {
 			match("*");
@@ -31,6 +51,11 @@ public class Parser {
 		return null;
 	}
 
+	/**
+	 * parses addition or subtraction
+	 * @return NodeAddop if found or null
+	 * @throws SyntaxException if it fails
+	 */
 	private NodeAddop parseAddop() throws SyntaxException {
 		if (curr().equals(new Token("+"))) {
 			match("+");
@@ -43,6 +68,11 @@ public class Parser {
 		return null;
 	}
 
+	/**
+	 * Parses a factor (number,variable or expression)
+	 * @return NodeFact for a parsed factor
+	 * @throws SyntaxException if it fails
+	 */
 	private NodeFact parseFact() throws SyntaxException {
 		if (curr().equals(new Token("("))) {
 			match("(");
@@ -59,7 +89,11 @@ public class Parser {
 		match("num");
 		return new NodeFactNum(num.lex());
 	}
-
+	/**
+	 * Parses a term (a factor followed by a * or / and another term)
+	 * @return a NodeTerm representing a term
+	 * @throws SyntaxException if it fails
+	 */
 	private NodeTerm parseTerm() throws SyntaxException {
 		NodeFact fact = parseFact();
 		NodeMulop mulop = parseMulop();
@@ -70,6 +104,11 @@ public class Parser {
 		return term;
 	}
 
+	/**
+	 * Parses the expression (term followed by + or - and another expression
+	 * @return NodeExpr for this expression
+	 * @throws SyntaxException if it fails...
+	 */
 	private NodeExpr parseExpr() throws SyntaxException {
 		NodeTerm term = parseTerm();
 		NodeAddop addop = parseAddop();
@@ -80,6 +119,11 @@ public class Parser {
 		return expr;
 	}
 
+	/**
+	 * parse the assignment statement
+	 * @return NodeAssn for the assignment
+	 * @throws SyntaxException if. it. fails.
+	 */
 	private NodeAssn parseAssn() throws SyntaxException {
 		Token id = curr();
 		match("id");
@@ -89,6 +133,11 @@ public class Parser {
 		return assn;
 	}
 
+	/**
+	 *  Parse the complete statement (assignment followed by semicolon)
+	 * @return NodeStmt object representing the statement
+	 * @throws SyntaxException if it fails
+	 */
 	private NodeStmt parseStmt() throws SyntaxException {
 		NodeAssn assn = parseAssn();
 		match(";");
@@ -96,6 +145,12 @@ public class Parser {
 		return stmt;
 	}
 
+	/**
+	 * parses the entire string
+	 * @param program input code
+	 * @return the root node of the syntax tree
+	 * @throws SyntaxException if parsing fails
+	 */
 	public Node parse(String program) throws SyntaxException {
 		scanner = new Scanner(program);
 		scanner.next();
