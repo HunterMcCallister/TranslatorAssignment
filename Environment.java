@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Environment class represents the runtime variable store for the interpreter and compiler.
  * It maintains a mapping from variable names to their values and provides methods for inserting, retrieving and generating code
@@ -17,8 +20,11 @@
 // and elsewhere.
 
 public class Environment {
-	/*implememnt map here*/
-	private String[] map = { "x" };
+	private Map<String, Integer> map;
+
+    public Environment() {
+        map = new HashMap<>();
+    }
 
 	/**
 	 * inserts or updates a variable in the environment.
@@ -27,7 +33,8 @@ public class Environment {
 	 * @return the value assigned
 	 */
 	public int put(String var, int val) {
-		return val;
+		map.put(var, val);
+        return val;
 	}
 
 	/**
@@ -38,7 +45,10 @@ public class Environment {
 	 * @throws EvalException if the variable has no definition
 	 */
 	public int get(int pos, String var) throws EvalException {
-		return 0;
+		if (!map.containsKey(var)) {
+            throw new EvalException(pos, "undefined variable: " + var);
+        }
+        return map.get(var);
 	}
 
 	/**
@@ -46,13 +56,17 @@ public class Environment {
 	 * @return C code string with all variables
 	 */
 	public String toC() {
-		String s = "";
-		String sep = " ";
-		for (String v : map) {
-			s += sep + v;
-			sep = ",";
-		}
-		return s == "" ? "" : "int" + s + ";\nx=0;x=x;\n";
-	}
-
+        if (map.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder("int ");
+        String sep = "";
+        for (String v : map.keySet()) {
+            sb.append(sep).append(v);
+            sep = ", ";
+        }
+        sb.append("\n");
+        for (String v : map.keySet()) {
+            sb.append("=").append(map.get(v)).append("\n");
+        }
+        return sb.toString();
+    }
 }
