@@ -24,7 +24,7 @@ public class NodeAddop extends Node {
 	 * @return result of applying
 	 * @throws EvalException if operator symbol is invalid
 	 */
-	public int op(int o1, int o2) throws EvalException {
+	public double op(double o1, double o2) throws EvalException {
 		if (addop.equals("+"))
 			return o1+o2;
 		if (addop.equals("-"))

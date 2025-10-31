@@ -132,6 +132,10 @@ public class Scanner {
 	private void nextNumber() {
 		int old=pos;
 		many(digits);
+        if (!done() && program.charAt(pos) == '.') {
+            pos++;
+            many(digits);
+        }
 		token=new Token("num",program.substring(old,pos));
 	}
 	/** Scans an identifier or keyword token. */
@@ -227,7 +231,7 @@ public class Scanner {
 		return token;
 	}
 	/** @return the current position in the source code. */
-	public int pos() {
+	public double pos() {
 		return pos;
 	}
 

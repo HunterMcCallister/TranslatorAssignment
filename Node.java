@@ -6,13 +6,17 @@ public abstract class Node {
 	/* position of the node in the input source */
 	protected int pos=0;
 
+    public int pos() {
+        return pos;
+    }
+
 	/**
 	 * Evaluates the node within the environment.
 	 * @param env current run time environment
 	 * @return numeric result of evaluating
 	 * @throws EvalException if node cannot be evaluated
 	 */
-	public int eval(Environment env) throws EvalException {
+	public double eval(Environment env) throws EvalException {
 		throw new EvalException(pos,"cannot eval() node!");
 	}
 

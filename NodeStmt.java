@@ -22,7 +22,7 @@ public class NodeStmt extends Node {
 	 * @return the value produced by the assignment
 	 * @throws EvalException if an error occurs
 	 */
-	public int eval(Environment env) throws EvalException {
+	public double eval(Environment env) throws EvalException {
 		return assn.eval(env);
 	}
 

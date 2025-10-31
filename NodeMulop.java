@@ -25,7 +25,7 @@ public class NodeMulop extends Node {
 	 * @return result of applying opp
 	 * @throws EvalException if opp invalid or div by zero
 	 */
-	public int op(int o1, int o2) throws EvalException {
+	public double op(double o1, double o2) throws EvalException {
 		if (mulop.equals("*"))
 			return o1*o2;
 		if (mulop.equals("/"))

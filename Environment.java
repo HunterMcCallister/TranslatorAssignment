@@ -20,7 +20,7 @@ import java.util.Map;
 // and elsewhere.
 
 public class Environment {
-	private Map<String, Integer> map;
+	private Map<String, Double> map;
 
     public Environment() {
         map = new HashMap<>();
@@ -32,7 +32,7 @@ public class Environment {
 	 * @param val value to assign
 	 * @return the value assigned
 	 */
-	public int put(String var, int val) {
+	public double put(String var, double val) {
 		map.put(var, val);
         return val;
 	}
@@ -44,7 +44,7 @@ public class Environment {
 	 * @return stored value
 	 * @throws EvalException if the variable has no definition
 	 */
-	public int get(int pos, String var) throws EvalException {
+	public double get(int pos, String var) throws EvalException {
 		if (!map.containsKey(var)) {
             throw new EvalException(pos, "undefined variable: " + var);
         }
@@ -57,7 +57,7 @@ public class Environment {
 	 */
 	public String toC() {
         if (map.isEmpty()) return "";
-        StringBuilder sb = new StringBuilder("int ");
+        StringBuilder sb = new StringBuilder("double ");
         String sep = "";
         for (String v : map.keySet()) {
             sb.append(sep).append(v);

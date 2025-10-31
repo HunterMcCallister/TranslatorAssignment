@@ -21,7 +21,7 @@ public class NodeFactExpr extends NodeFact {
 	 * @return result of evaluating the inner expression
 	 * @throws EvalException if an error occurs
 	 */
-	public int eval(Environment env) throws EvalException {
+	public double eval(Environment env) throws EvalException {
 		return expr.eval(env);
 	}
 

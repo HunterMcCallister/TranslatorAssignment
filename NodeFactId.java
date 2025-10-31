@@ -23,7 +23,7 @@ public class NodeFactId extends NodeFact {
 	 * @return value of the variable
 	 * @throws EvalException if variable is undefined
 	 */
-	public int eval(Environment env) throws EvalException {
+	public double eval(Environment env) throws EvalException {
 		return env.get(pos,id);
 	}
 

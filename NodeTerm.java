@@ -44,7 +44,7 @@ public class NodeTerm extends Node {
 	 * @return the numeric result of evaluating the term
 	 * @throws EvalException if an error occurs during evaluation
 	 */
-	public int eval(Environment env) throws EvalException {
+	public double eval(Environment env) throws EvalException {
 		return term==null
 			? fact.eval(env)
 			: mulop.op(term.eval(env),fact.eval(env));

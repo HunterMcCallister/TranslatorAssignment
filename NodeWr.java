@@ -24,8 +24,8 @@ public class NodeWr extends Node {
 	 * @return
 	 * @throws EvalException
 	 */
-	public int eval(Environment env) throws EvalException {
-		int d=expr.eval(env);
+	public double eval(Environment env) throws EvalException {
+		double d=expr.eval(env);
 		int i=(int) d;
 		if (i==d)
 			System.out.println(i);

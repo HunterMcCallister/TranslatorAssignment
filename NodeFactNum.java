@@ -21,8 +21,8 @@ public class NodeFactNum extends NodeFact {
 	 * @return the numeric value of this literal
 	 * @throws EvalException if parsing the number fails
 	 */
-	public int eval(Environment env) throws EvalException {
-		return Integer.parseInt(num);
+	public double eval(Environment env) throws EvalException {
+		return Double.parseDouble(num);
 	}
 
 	/**

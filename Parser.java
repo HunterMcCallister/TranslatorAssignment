@@ -29,7 +29,7 @@ public class Parser {
 	/**
 	 * @return the current position
 	 */
-	private int pos() {
+	private double pos() {
 		return scanner.pos();
 	}
 
@@ -42,11 +42,11 @@ public class Parser {
 	private NodeMulop parseMulop() throws SyntaxException {
 		if (curr().equals(new Token("*"))) {
 			match("*");
-			return new NodeMulop(pos(), "*");
+			return new NodeMulop((int) pos(), "*");
 		}
 		if (curr().equals(new Token("/"))) {
 			match("/");
-			return new NodeMulop(pos(), "/");
+			return new NodeMulop((int) pos(), "/");
 		}
 		return null;
 	}
@@ -59,11 +59,11 @@ public class Parser {
 	private NodeAddop parseAddop() throws SyntaxException {
 		if (curr().equals(new Token("+"))) {
 			match("+");
-			return new NodeAddop(pos(), "+");
+			return new NodeAddop((int) pos(), "+");
 		}
 		if (curr().equals(new Token("-"))) {
 			match("-");
-			return new NodeAddop(pos(), "-");
+			return new NodeAddop((int) pos(), "-");
 		}
 		return null;
 	}
@@ -74,6 +74,12 @@ public class Parser {
 	 * @throws SyntaxException if it fails
 	 */
 	private NodeFact parseFact() throws SyntaxException {
+        if (curr().equals(new Token("-"))){
+            match("-");
+            NodeFact fact = parseFact();
+            return new NodeFactNeg(fact);
+        }
+
 		if (curr().equals(new Token("("))) {
 			match("(");
 			NodeExpr expr = parseExpr();
@@ -83,7 +89,7 @@ public class Parser {
 		if (curr().equals(new Token("id"))) {
 			Token id = curr();
 			match("id");
-			return new NodeFactId(pos(), id.lex());
+			return new NodeFactId((int) pos(), id.lex());
 		}
 		Token num = curr();
 		match("num");
