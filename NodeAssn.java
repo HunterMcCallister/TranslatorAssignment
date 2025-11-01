@@ -33,7 +33,7 @@ public class NodeAssn extends Node {
 	 * @return C source code
 	 */
 	public String code() {
-		return id + "=" + expr.code() + ";" + new NodeWr(expr).code();
+		return id + "=" + expr.code() + ";\n" + new NodeWr(expr).code();
 	}
 
 }

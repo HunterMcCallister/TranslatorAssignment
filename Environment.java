@@ -55,18 +55,17 @@ public class Environment {
 	 * Generates a string containing C declarations for all variables defined
 	 * @return C code string with all variables
 	 */
-	public String toC() {
+    public String toC() {
         if (map.isEmpty()) return "";
+
         StringBuilder sb = new StringBuilder("double ");
         String sep = "";
         for (String v : map.keySet()) {
-            sb.append(sep).append(v);
+            sb.append(sep).append(v).append(" = 0.0");
             sep = ", ";
         }
-        sb.append("\n");
-        for (String v : map.keySet()) {
-            sb.append("=").append(map.get(v)).append("\n");
-        }
+        sb.append(";\n");
+
         return sb.toString();
     }
 }
