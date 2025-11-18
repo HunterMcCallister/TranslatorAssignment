@@ -67,9 +67,25 @@ public class Scanner {
 		s.add("(");
 		s.add(")");
 		s.add(";");
+		s.add("<");
+		s.add(">");
+		// multiple-character operators
+		s.add("==");
+		s.add("<>");
+		s.add("<=");
+		s.add(">=");
 	}
-	/** Initializes the keyword set. (Empty for now.) */
+	/** Initializes the keyword set. */
 	private void initKeywords(Set<String> s) {
+		s.add("rd");
+		s.add("wr");
+		s.add("if");
+		s.add("then");
+		s.add("else");
+		s.add("while");
+		s.add("do");
+		s.add("begin");
+		s.add("end");
 	}
 
 	/**
@@ -148,8 +164,8 @@ public class Scanner {
 	}
 	/** Scans an operator token (one or two characters). */
 	private void nextOp() {
-		int old=pos;
-		pos=old+2;
+		int old = pos;
+		pos= old + 2;
 		if (!done()) {
 			String lexeme=program.substring(old,pos);
 			if (operators.contains(lexeme)) {
@@ -231,7 +247,7 @@ public class Scanner {
 		return token;
 	}
 	/** @return the current position in the source code. */
-	public double pos() {
+	public int pos() {
 		return pos;
 	}
 
